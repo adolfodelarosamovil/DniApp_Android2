@@ -3,6 +3,7 @@ package com.example.dniapp.actividades;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,18 +15,26 @@ import com.example.dniapp.beans.Dni;
 import com.example.dniapp.beans.DniX;
 import com.example.dniapp.beans.DniY;
 import com.example.dniapp.beans.DniZ;
+import com.example.dniapp.util.Preferencias;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG_APP = "DNI_APP";
     private RadioButton radioButtonSeleccionado;
+    private EditText caja_dni;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        this.caja_dni = findViewById(R.id.dni);
         this.radioButtonSeleccionado = findViewById(R.id.radio1);
+
+        String ultimo_dni = Preferencias.obtenerUltimoDNI(this);
+        this.caja_dni.setText(ultimo_dni);
+
+
+
     }
 
 
@@ -68,20 +77,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //este método se invoca cuando el usuario pulsa el  botón de hacia atrás
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d(TAG_APP, "El usuario le ha dado para atrás");
+        String contenido_caja = this.caja_dni.getText().toString();
+        Preferencias.guardarDNI(this, contenido_caja);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
     public void tocadoRadio(View view) {
         Log.d(TAG_APP, "Tocó RadioButton");
