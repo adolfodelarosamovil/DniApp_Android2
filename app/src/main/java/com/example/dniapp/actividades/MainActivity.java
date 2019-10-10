@@ -1,7 +1,9 @@
 package com.example.dniapp.actividades;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import com.example.dniapp.beans.DniX;
 import com.example.dniapp.beans.DniY;
 import com.example.dniapp.beans.DniZ;
 import com.example.dniapp.util.Preferencias;
+import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,11 +31,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.caja_dni = findViewById(R.id.dni);
-        this.radioButtonSeleccionado = findViewById(R.id.radio1);
+        int id_radio = Preferencias.obtenerRadioActivo(this);
+        if (id_radio==0)//no había guardado
+        {
+            this.radioButtonSeleccionado = findViewById(R.id.radio1);
+        }
+        else{
+            this.radioButtonSeleccionado = findViewById(id_radio);
+            this.radioButtonSeleccionado.setChecked(true);
+
+        }
 
         String ultimo_dni = Preferencias.obtenerUltimoDNI(this);
         this.caja_dni.setText(ultimo_dni);
-
 
 
     }
@@ -74,32 +85,60 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AnimacionLetraActivity.class);
         intent.putExtra("LETRA", letra_dni);
         startActivity(intent);
+        caja_dni.setText("");
     }
 
+
+    private String obtenerDni ()
+    {
+        String dni_actual = null;
+
+            EditText editText = findViewById(R.id.dni);
+            dni_actual = editText.getText().toString();
+
+        return dni_actual;
+    }
 
     //este método se invoca cuando el usuario pulsa el  botón de hacia atrás
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         Log.d(TAG_APP, "El usuario le ha dado para atrás");
-        String contenido_caja = this.caja_dni.getText().toString();
-        Preferencias.guardarDNI(this, contenido_caja);
-
+        mostrarDialogoGuardar();
     }
+
 
     public void tocadoRadio(View view) {
         Log.d(TAG_APP, "Tocó RadioButton");
         this.radioButtonSeleccionado = (RadioButton)view;
     }
 
-    /*private char calcularLetra (int numero_dni)
+
+    private void mostrarDialogoGuardar ()
     {
-        char letra_calculada =  ' ';
-        int resto = -1;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("¿Desea guardar los cambios?");
 
-            resto = (numero_dni%SECUENCIA_LETRAS_DNI.length());
-            letra_calculada = SECUENCIA_LETRAS_DNI.charAt(resto);
-
-        return letra_calculada;
-    }*/
+        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Log.d(TAG_APP, "Tocó SÍ");
+                dialog.dismiss();
+                String dni_guardar = MainActivity.this.obtenerDni();
+                Preferencias.guardarDNI(MainActivity.this, dni_guardar);
+                Preferencias.guardarRadioActivo(MainActivity.this, MainActivity.this.radioButtonSeleccionado.getId());
+                MainActivity.this.finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                Log.d(TAG_APP, "Tocó NO");
+                dialog.cancel();
+                Preferencias.guardarDNI(MainActivity.this, "");
+                Preferencias.guardarRadioActivo(MainActivity.this, 0);
+                MainActivity.this.finish();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }

@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.dniapp.R;
+import com.example.dniapp.util.Preferencias;
 
 public class AnimacionLetraActivity extends AppCompatActivity {
 
@@ -24,5 +25,7 @@ public class AnimacionLetraActivity extends AppCompatActivity {
         //Hacer la animación
         Animation animacion = AnimationUtils.loadAnimation(this, R.anim.animacion_letra);
         caja_letra.startAnimation(animacion);
+        //borrar el dni guardado
+        Preferencias.guardarDNI(this, "");
     }
 }
