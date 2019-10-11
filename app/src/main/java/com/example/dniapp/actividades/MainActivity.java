@@ -3,6 +3,7 @@ package com.example.dniapp.actividades;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -86,6 +87,13 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("LETRA", letra_dni);
         startActivity(intent);
         caja_dni.setText("");
+
+        //guadarmos el objeto DNI
+        dni.setLetra(letra_dni);
+        Gson gson = new Gson();
+        String dni_json = gson.toJson(dni);
+        Log.d(TAG_APP, "DNI json " + dni_json);
+        Preferencias.guardarDNIJson(this, dni_json);
     }
 
 
@@ -126,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 Preferencias.guardarDNI(MainActivity.this, dni_guardar);
                 Preferencias.guardarRadioActivo(MainActivity.this, MainActivity.this.radioButtonSeleccionado.getId());
                 MainActivity.this.finish();
+
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
