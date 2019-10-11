@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         String ultimo_dni = Preferencias.obtenerUltimoDNI(this);
         this.caja_dni.setText(ultimo_dni);
 
+        Preferencias.mostrarFicheroDni(this);
+
 
     }
 

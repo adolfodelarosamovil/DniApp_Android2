@@ -2,8 +2,14 @@ package com.example.dniapp.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
+import com.example.dniapp.actividades.MainActivity;
 import com.google.gson.Gson;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -109,4 +115,35 @@ public class Preferencias {
             editor.putString(nueva_clave, dni_json);
             editor.commit();
     }
+
+    /**
+     * Mostar por Log el contenudo del fichero de DNI's
+     * @param context
+     */
+   public static void mostrarFicheroDni (Context context)
+   {
+       String clave_actual = null;
+       String dni_actual = null;
+
+       SharedPreferences sp = context.getSharedPreferences(FICHERO_DNIS, Context.MODE_PRIVATE);
+       Map<String, String> mapa_dnis = (Map<String, String>)sp.getAll();
+       //recorrer el mapa_dnis
+       Set<String> claves = mapa_dnis.keySet();
+
+       for (String clave : claves) {
+           dni_actual = mapa_dnis.get(clave);
+           Log.d(MainActivity.TAG_APP, dni_actual);
+       }
+
+       /*Iterator<String> iterator = claves.iterator();
+
+       while (iterator.hasNext())
+       {
+           clave_actual = iterator.next();
+           dni_actual = mapa_dnis.get(clave_actual);
+           Log.d(MainActivity.TAG_APP, dni_actual);
+       }*/
+
+
+   }
 }
