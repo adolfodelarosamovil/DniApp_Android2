@@ -1,14 +1,16 @@
 package com.example.dniapp.actividades;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -21,11 +23,22 @@ import com.example.dniapp.beans.DniZ;
 import com.example.dniapp.util.Preferencias;
 import com.google.gson.Gson;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG_APP = "DNI_APP";
     private RadioButton radioButtonSeleccionado;
     private EditText caja_dni;
+
+    private void mostrarListaDnis (List<Dni> list)
+    {
+        Log.d(TAG_APP, "Mostrando lista de Dnis");
+        for (Dni dni : list)
+        {
+            Log.d(TAG_APP, dni.getNumero() + " " + dni.getLetra());
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
         String ultimo_dni = Preferencias.obtenerUltimoDNI(this);
         this.caja_dni.setText(ultimo_dni);
 
-        Preferencias.mostrarFicheroDni(this);
+        List<Dni> dniList = Preferencias.cargarFicheroDni(this);
+        mostrarListaDnis(dniList);
 
 
     }
@@ -151,5 +165,25 @@ public class MainActivity extends AppCompatActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.ver_lista_dnis:
+                Log.d(TAG_APP, "Quiere ver la lista de dnis");
+                Intent intent = new Intent(this, ListaDnisActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,9 +5,12 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.dniapp.actividades.MainActivity;
+import com.example.dniapp.beans.Dni;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -120,20 +123,28 @@ public class Preferencias {
      * Mostar por Log el contenudo del fichero de DNI's
      * @param context
      */
-   public static void mostrarFicheroDni (Context context)
+   public static List<Dni>  cargarFicheroDni (Context context)
    {
+       List<Dni> lista_dnis = null;
        String clave_actual = null;
        String dni_actual = null;
+       Dni objeto_dni = null;
+       Gson gson = null;
 
-       SharedPreferences sp = context.getSharedPreferences(FICHERO_DNIS, Context.MODE_PRIVATE);
-       Map<String, String> mapa_dnis = (Map<String, String>)sp.getAll();
-       //recorrer el mapa_dnis
-       Set<String> claves = mapa_dnis.keySet();
+           Log.d(MainActivity.TAG_APP, "Mostrando . . .");
+           SharedPreferences sp = context.getSharedPreferences(FICHERO_DNIS, Context.MODE_PRIVATE);
+           Map<String, String> mapa_dnis = (Map<String, String>)sp.getAll();
+           //recorrer el mapa_dnis
+           Set<String> claves = mapa_dnis.keySet();
+           gson = new Gson();
+           lista_dnis = new ArrayList<Dni>();
 
-       for (String clave : claves) {
-           dni_actual = mapa_dnis.get(clave);
-           Log.d(MainActivity.TAG_APP, dni_actual);
-       }
+           for (String clave : claves) {
+               dni_actual = mapa_dnis.get(clave);//obtengo el valor asociado a la clave
+               Log.d(MainActivity.TAG_APP, dni_actual);
+               objeto_dni = gson.fromJson(dni_actual, Dni.class);//y deserializo
+               lista_dnis.add(objeto_dni);//añado a la lista el objeto Dni obtenido
+           }
 
        /*Iterator<String> iterator = claves.iterator();
 
@@ -144,6 +155,6 @@ public class Preferencias {
            Log.d(MainActivity.TAG_APP, dni_actual);
        }*/
 
-
+    return lista_dnis;
    }
 }
