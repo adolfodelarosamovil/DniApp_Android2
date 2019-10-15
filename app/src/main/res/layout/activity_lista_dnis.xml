@@ -25,7 +25,8 @@
                 android:layout_weight="80"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="DNI"
-                android:textSize="16sp"></TextView>
+                android:textSize="16sp"
+                android:onClick="ordenarPorNumero"></TextView>
 
             <TextView
                 android:layout_width="0dp"
@@ -34,7 +35,8 @@
                 android:layout_weight="20"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="LETRA"
-                android:textSize="16sp"></TextView>
+                android:textSize="16sp"
+                android:onClick="ordenarPorLetra"></TextView>
         </LinearLayout>
 
         <FrameLayout

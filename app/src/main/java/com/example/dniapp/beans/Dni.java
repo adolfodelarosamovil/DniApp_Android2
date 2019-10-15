@@ -3,7 +3,7 @@ package com.example.dniapp.beans;
 /**
  * Clase que representa un DNI
  */
-public class Dni {
+public class Dni implements Comparable<Dni>{
 
     private int numero;
     private char letra;
@@ -51,5 +51,14 @@ public class Dni {
             letra_calculada = SECUENCIA_LETRAS_DNI.charAt(resto);
 
         return letra_calculada;
+    }
+
+    @Override
+    public int compareTo(Dni o) {
+        int resultado = 0;
+
+        resultado = this.getNumero() - o.getNumero();
+
+        return resultado;
     }
 }
