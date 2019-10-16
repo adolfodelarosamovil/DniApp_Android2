@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.dniapp.R;
 import com.example.dniapp.adapter.DniAdapter;
@@ -48,6 +49,8 @@ public class ListaDnisActivity extends AppCompatActivity {
         Collections.sort(dniList);
         dniAdapter.setDniList(dniList);
         dniAdapter.notifyDataSetChanged();
+        Toast toast = Toast.makeText(this, "Lista ordenada por número", Toast.LENGTH_LONG);
+        toast.show();
 
     }
 
@@ -56,5 +59,8 @@ public class ListaDnisActivity extends AppCompatActivity {
         Collections.sort(dniList,new Comparador());
         dniAdapter.setDniList(dniList);
         dniAdapter.notifyDataSetChanged();
+
+        Toast toast = Toast.makeText(this, "Lista ordenada por letra", Toast.LENGTH_LONG);
+        toast.show();
     }
 }
