@@ -5,12 +5,26 @@ package com.example.dniapp.beans;
  */
 public class Dni implements Comparable<Dni>{
 
+    private int id;
     private int numero;
     private char letra;
 
     protected static final String SECUENCIA_LETRAS_DNI = "TRWAGMYFPDXBNJZSQVHLCKE";
 
 
+    public Dni(int id, int numero, char letra) {
+        this.id = id;
+        this.numero = numero;
+        this.letra = letra;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Dni(int numero) {
 

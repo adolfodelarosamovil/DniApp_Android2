@@ -20,9 +20,11 @@ import com.example.dniapp.beans.Dni;
 import com.example.dniapp.beans.DniX;
 import com.example.dniapp.beans.DniY;
 import com.example.dniapp.beans.DniZ;
+import com.example.dniapp.dao.BaseDatosDni;
 import com.example.dniapp.util.Preferencias;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG_APP = "DNI_APP";
     private RadioButton radioButtonSeleccionado;
     private EditText caja_dni;
+    private BaseDatosDni baseDatosDni;
+
 
     private void mostrarListaDnis (List<Dni> list)
     {
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         this.caja_dni = findViewById(R.id.dni);
         int id_radio = Preferencias.obtenerRadioActivo(this);
         if (id_radio==0)//no había guardado
@@ -109,7 +114,10 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String dni_json = gson.toJson(dni);
         Log.d(TAG_APP, "DNI json " + dni_json);
-        Preferencias.guardarDNIJson(this, dni_json);
+        //Preferencias.guardarDNIJson(this, dni_json);
+        //creo el objeto de la base de datos
+        this.baseDatosDni = new BaseDatosDni(this, "MiDB", null, 1);
+        baseDatosDni.insertarDni(dni);
     }
 
 

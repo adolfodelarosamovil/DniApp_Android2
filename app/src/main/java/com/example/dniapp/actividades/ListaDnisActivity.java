@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.dniapp.R;
 import com.example.dniapp.adapter.DniAdapter;
 import com.example.dniapp.beans.Dni;
+import com.example.dniapp.dao.BaseDatosDni;
 import com.example.dniapp.util.Comparador;
 import com.example.dniapp.util.Preferencias;
 
@@ -24,13 +25,21 @@ public class ListaDnisActivity extends AppCompatActivity {
 
     List<Dni> dniList;
     DniAdapter dniAdapter;
+    BaseDatosDni baseDatosDni;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_dnis);
 
-        dniList = Preferencias.cargarFicheroDni(this);
+        //dniList = Preferencias.cargarFicheroDni(this);
+
+
+        //creo el objeto de la base de datos
+        this.baseDatosDni = new BaseDatosDni(this, "MiDB", null, 1);
+
+
+        dniList = baseDatosDni.buscarDnis();
 
         if (dniList!=null && dniList.size() > 0)
         {

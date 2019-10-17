@@ -9,9 +9,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.dniapp.R;
+import com.example.dniapp.dao.BaseDatosDni;
 import com.example.dniapp.util.Preferencias;
 
 public class AnimacionLetraActivity extends AppCompatActivity {
+
+    BaseDatosDni baseDatosDni;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
