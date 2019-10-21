@@ -70,6 +70,22 @@ public class BaseDatosDni extends SQLiteOpenHelper {
 
     }
 
+    public void borrarDni (Dni dni) {
+
+
+        SQLiteDatabase database = null;
+        try {
+
+            database = this.getWritableDatabase();
+            database.execSQL("DELETE FROM DNI WHERE id = " + dni.getId());
+        } catch (Exception e) {
+            Log.d("MIAPP", "Ha petao borrando un DNI" + dni.toString(), e);
+        } finally {
+            this.cerrarBaseDatos(database);
+        }
+
+    }
+
     public List<Dni> buscarDnis ()
     {
         List<Dni> lista_dni = null;
